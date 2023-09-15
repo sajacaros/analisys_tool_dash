@@ -5,10 +5,10 @@ seaborn, plotly, sklearn에서 제공하는 데이터와 온라인상의 csv 파
 - numpy
 - pandas
 - matplotlib
-- seaborn
 - sklearn
 - plotly
 - dash
+- dash-bootstrap-components
 
 ## How to start
 ```shell
@@ -18,7 +18,11 @@ $ cd analisys_tool_dash
 
 ## Installation
 ```shell
-$ pip install -r requirements.txt
+$ pip install dash
+$ pip install dash-bootstrap-components
+$ pip install numpy
+$ pip install pandas
+$ pip install scikit-learn
 ```
 
 ## Run
