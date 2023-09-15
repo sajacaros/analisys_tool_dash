@@ -20,13 +20,12 @@ $ cd analisys_tool_dash
 ```shell
 $ pip install dash
 $ pip install dash-bootstrap-components
-$ pip install numpy
 $ pip install pandas
 $ pip install scikit-learn
 ```
 
 ## Run
-```shell 
+```shell
 $ python analysis.py
 ```
 
