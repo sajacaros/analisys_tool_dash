@@ -4,11 +4,10 @@ seaborn, plotly, sklearn에서 제공하는 데이터와 온라인상의 csv 파
 ## Prerequisite
 - numpy
 - pandas
-- matplotlib
-- sklearn
 - plotly
 - dash
 - dash-bootstrap-components
+- sklearn
 
 ## How to start
 ```shell
@@ -28,6 +27,9 @@ $ pip install scikit-learn
 ```shell
 $ python analysis.py
 ```
+
+## Document
+* [기획 자료](https://docs.google.com/presentation/d/1sSDc6eYUmPuQ8P8gIAom1tlhhNoiXy5uYC2z26Q-oFg/edit?usp=sharing)
 
 ## Credits
 - @sajacaros
