@@ -4,7 +4,6 @@ import plotly.express as px
 import dash_bootstrap_components as dbc
 import seaborn as sns
 
-
 external_stylesheets = [dbc.themes.FLATLY]  # CERULEAN]
 app = Dash(__name__, external_stylesheets=external_stylesheets, suppress_callback_exceptions=True)
 
@@ -22,6 +21,7 @@ def csv_input(disable=False):
         dbc.Input(id='csv_input', placeholder='Type csv url', type='text', disabled=disable),
     ])
 
+
 def seaborn_datalist():
     """
     :return:
@@ -29,12 +29,17 @@ def seaborn_datalist():
     """
     return sns.get_dataset_names()
 
+
 def plotly_datalist():
     """
     :return:
         plotly data list
     """
-    return ['carshare', 'election', 'experiment', 'gapminder', 'iris', 'medals_long', 'medals_wide', 'stocks', 'tips', 'wind']
+    return [
+        'carshare', 'election', 'experiment', 'gapminder', 'iris', 'medals_long', 'medals_wide', 'stocks', 'tips',
+        'wind',
+    ]
+
 
 def sklearn_datalist():
     """
@@ -62,14 +67,25 @@ def datasource_input(data_source, disable=False):
         sklearn_datalist()
     )
     return html.Div([
-        csv_input() if data_source == 'csv' else
+        csv_input(disable) if data_source == 'csv' else
         dbc.Select(
-            id=data_source+'_input',
+            id=data_source + '_input',
             options=[{'label': data, 'value': data} for data in data_list],
             value=data_list[0],
             disabled=disable,
         ),
     ])
+
+input_types = ['csv', 'seaborn', 'plotly', 'sklearn']
+@app.callback(
+    Output(component_id='user_input', component_property='children'),
+    Input(component_id='user_input_select', component_property='value'),
+)
+def activate_input_component(target):
+    activates = [not(target == t) for t in input_types]
+    return [
+        dbc.Row(datasource_input(t, activate)) for t, activate in zip(input_types, activates)
+    ]
 
 
 app.layout = dbc.Container([
@@ -77,6 +93,7 @@ app.layout = dbc.Container([
         dbc.Row([
             dbc.Col(
                 dbc.RadioItems(
+                    id='user_input_select',
                     options={
                         'csv': 'csv url',
                         'seaborn': 'seaborn data',
@@ -86,17 +103,12 @@ app.layout = dbc.Container([
                     value='csv',
                 ),
             ),
-            dbc.Col([
-                dbc.Row(datasource_input('csv')),
-                dbc.Row(datasource_input('seaborn')),
-                dbc.Row(datasource_input('plotly')),
-                dbc.Row(datasource_input('sklearn')),
-            ]),
+            dbc.Col(html.Div(id='user_input')),
             dbc.Col(dbc.Button('apply', color='primary', className='me-1')),
         ]),
         dbc.Row(html.Div('chart'), style={'backgroundColor': 'yellow'}),
     ]),
 ])
 
-if __name__=='__main__':
+if __name__ == '__main__':
     app.run(debug=True)
