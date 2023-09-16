@@ -1,9 +1,9 @@
-import plotly
-from dash import Dash, html, dcc, callback, Output, Input, State
-import plotly.express as px
 import dash_bootstrap_components as dbc
-import seaborn as sns
 import pandas as pd
+import plotly.express as px
+import seaborn as sns
+from dash import Dash, html, Output, Input, State
+from sklearn import datasets
 
 from numeric_analysis import numeric_analysis
 
@@ -26,7 +26,7 @@ def csv_input(disable=False):
 def select_input(data_source, disable=False):
     """
     :param data_source:
-        data source name, seaborn, plotly, sklearn
+        data source name, seaborn, plotly
     :param disable:
         if True, input disable
         otherwise, input enable
@@ -69,17 +69,19 @@ def plotly_datalist():
 
 def sklearn_datalist():
     """
-    :return:
-        sklearn data list
-    """
-    return ['iris', 'diabetes', 'digits', 'wine', 'breast_cancer']
+        :return:
+            sklearn data list
+        """
+    return [
+        'iris', 'diabetes', 'digits', 'linnerud', 'wine', 'breast_cancer',
+    ]
 
 
 def datasource_input(data_source, disable=False):
     """
     serve input box or select box, that select data_source
     :param data_source:
-        csv, seaborn, plotly, sklearn
+        csv, seaborn, plotly
     :param disable:
         if True, select disable
         otherwise, select enable
@@ -89,7 +91,7 @@ def datasource_input(data_source, disable=False):
     """
     return csv_input(disable) if data_source == 'csv' else select_input(data_source, disable)
 
-input_types = ['csv', 'seaborn', 'plotly', 'sklearn']
+
 @app.callback(
     Output(component_id='user_input_component', component_property='children'),
     Input(component_id='datasource_select', component_property='value'),
@@ -97,10 +99,46 @@ input_types = ['csv', 'seaborn', 'plotly', 'sklearn']
 def activate_input_component(target):
     return dbc.Row(datasource_input(target))
 
-url = 'https://github.com/DSNote/fastcampus/raw/main/rent.csv'
-df = pd.read_csv(url)
 
-numeric_analysis = numeric_analysis(df, app)
+numeric_analysis = numeric_analysis(app)
+
+
+def get_csv_data(data_name):
+    return pd.read_csv(data_name)
+
+
+def get_seaborn_data(data_name):
+    return sns.load_dataset(data_name)
+
+
+def get_plotly_data(data_name):
+    return getattr(px.data, data_name)()
+
+
+def get_sklearn_data(data_name):
+    data = getattr(datasets, 'load_'+data_name)()
+    df = pd.DataFrame(
+        data=data.data,
+        columns=data.feature_names,
+    )
+    df['target'] = pd.Series(data.target)
+    return df
+
+
+def get_data(datasource, data_name):
+    """
+    :param datasource: data daource
+    :param data_name: data name
+    :return:
+        dataframe for data name
+    """
+    return (
+        get_csv_data(data_name) if datasource == 'csv' else
+        get_seaborn_data(data_name) if datasource == 'seaborn' else
+        get_plotly_data(data_name) if datasource == 'plotly' else
+        get_sklearn_data(data_name)
+    )
+
 
 @app.callback(
     Output(component_id='analysis_area', component_property='children'),
@@ -110,13 +148,9 @@ numeric_analysis = numeric_analysis(df, app)
     prevent_initial_call=True,
 )
 def apply_datasource(n_clicks, datasource, data_name):
-    # data_df = get_data(datasource)
-    # data_df.head()
-    print(datasource)
-    numeric_analysis.change_data(df)
+    data_df = get_data(datasource, data_name)
+    numeric_analysis.change_data(data_df)
     return numeric_analysis.render()
-
-
 
 
 app.layout = dbc.Container([

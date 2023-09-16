@@ -3,18 +3,19 @@ import plotly.express as px
 from dash import html, dcc, Output, Input
 import plotly.figure_factory as ff
 
-def numeric_analysis(df, app):
-    return NumericAnalysis(df, app)
+def numeric_analysis(app):
+    return NumericAnalysis(app)
 
 
 from abc import ABCMeta, abstractmethod
 
 
 class BaseBlock(metaclass=ABCMeta):
-    def __init__(self, df, app=None, prefix=''):
+    def __init__(self, app=None, prefix=''):
         self.app = app
         self.prefix = prefix
-        self._data = df
+        self._data = None
+        self._numeric_columns = None
 
         if self.app is not None and hasattr(self, 'callbacks'):
             self.callbacks(self.app)
@@ -26,12 +27,12 @@ class BaseBlock(metaclass=ABCMeta):
 
     def change_data(self, df):
         self._data = df
+        self._numeric_columns = self._data.select_dtypes('number').columns
 
 
 class NumericAnalysis(BaseBlock):
-    def __init__(self, df, app):
-        super().__init__(df, app, 'Numeric')
-        self._numeric_columns = self._data.select_dtypes('number').columns
+    def __init__(self, app):
+        super().__init__(app, 'Numeric')
 
     def callbacks(self, app):
         @app.callback(
@@ -77,7 +78,7 @@ class NumericAnalysis(BaseBlock):
                                 value=0,
                                 style={'flex-wrap':'wrap'},
                             ),
-                        ], width=2, className='bg-light border',
+                        ], width=4, className='bg-light border',
                     ),
                     dbc.Col(
                         [
@@ -87,7 +88,7 @@ class NumericAnalysis(BaseBlock):
                                     dbc.Col(html.Div(id='describe-text'), width=2, align='start', style={'margin-top': 50, 'display': 'block'}),
                                 ],  align='center',
                             ),
-                        ], width=10,
+                        ], width=8,
                     ),
                 ]),
             ),
