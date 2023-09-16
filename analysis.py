@@ -76,7 +76,7 @@ app.layout = dbc.Container([
                 dbc.Row(select_input('plotly')),
                 dbc.Row(select_input('sklearn')),
             ]),
-            dbc.Col(html.Div('!!!'), style={'backgroundColor': 'blue'}),
+            dbc.Col(dbc.Button('apply', color='primary', className='me-1')),
         ]),
         dbc.Row(html.Div('chart'), style={'backgroundColor': 'yellow'}),
     ]),
