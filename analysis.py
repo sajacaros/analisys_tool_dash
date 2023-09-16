@@ -9,9 +9,17 @@ external_stylesheets = [dbc.themes.FLATLY]  # CERULEAN]
 app = Dash(__name__, external_stylesheets=external_stylesheets, suppress_callback_exceptions=True)
 
 
-def csv_input():
+def csv_input(disable=False):
+    """
+    :param disable:
+        if True, input disable
+        otherwise, input enable
+        default False
+    :return:
+        csv url by user input
+    """
     return html.Div([
-        dbc.Input(id='csv_input', placeholder='Type csv url', type='text'),
+        dbc.Input(id='csv_input', placeholder='Type csv url', type='text', disabled=disable),
     ])
 
 def seaborn_datalist():
@@ -35,10 +43,16 @@ def sklearn_datalist():
     """
     return ['iris', 'diabetes', 'digits', 'wine', 'breast_cancer']
 
-def select_input(data_source):
+
+def datasource_input(data_source, disable=False):
     """
+    serve input box or select box, that select data_source
     :param data_source:
-        seaborn, plotly, sklearn
+        csv, seaborn, plotly, sklearn
+    :param disable:
+        if True, select disable
+        otherwise, sleect enable
+        default False
     :return:
         select input for data_source
     """
@@ -48,10 +62,12 @@ def select_input(data_source):
         sklearn_datalist()
     )
     return html.Div([
+        csv_input() if data_source == 'csv' else
         dbc.Select(
             id=data_source+'_input',
             options=[{'label': data, 'value': data} for data in data_list],
             value=data_list[0],
+            disabled=disable,
         ),
     ])
 
@@ -71,10 +87,10 @@ app.layout = dbc.Container([
                 ),
             ),
             dbc.Col([
-                dbc.Row(csv_input()),
-                dbc.Row(select_input('seaborn')),
-                dbc.Row(select_input('plotly')),
-                dbc.Row(select_input('sklearn')),
+                dbc.Row(datasource_input('csv')),
+                dbc.Row(datasource_input('seaborn')),
+                dbc.Row(datasource_input('plotly')),
+                dbc.Row(datasource_input('sklearn')),
             ]),
             dbc.Col(dbc.Button('apply', color='primary', className='me-1')),
         ]),
