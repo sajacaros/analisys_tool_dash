@@ -172,7 +172,8 @@ app.layout = dbc.Container([
                 ),
                 dbc.Col(html.Div(id='user_input_component'), width=8),
                 dbc.Col(
-                    dbc.Button(id='apply_submit', children='apply', n_clicks=0, color='primary', className='me-1'), width=2,
+                    dbc.Button(id='apply_submit', children='load dataset', n_clicks=0, color='primary', className='me-1'),
+                    width=2,
                 ),
             ], align='center',
         ),
