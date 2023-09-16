@@ -3,6 +3,9 @@ from dash import Dash, html, dcc, callback, Output, Input, State
 import plotly.express as px
 import dash_bootstrap_components as dbc
 import seaborn as sns
+import pandas as pd
+
+from numeric_analysis import numeric_analysis
 
 external_stylesheets = [dbc.themes.FLATLY]  # CERULEAN]
 app = Dash(__name__, external_stylesheets=external_stylesheets, suppress_callback_exceptions=True)
@@ -94,6 +97,11 @@ input_types = ['csv', 'seaborn', 'plotly', 'sklearn']
 def activate_input_component(target):
     return dbc.Row(datasource_input(target))
 
+url = 'https://github.com/DSNote/fastcampus/raw/main/rent.csv'
+df = pd.read_csv(url)
+
+numeric_analysis = numeric_analysis(df, app)
+
 @app.callback(
     Output(component_id='analysis_area', component_property='children'),
     Input(component_id='apply_submit', component_property='n_clicks'),
@@ -105,7 +113,10 @@ def apply_datasource(n_clicks, datasource, data_name):
     # data_df = get_data(datasource)
     # data_df.head()
     print(datasource)
-    return html.Div(f'{datasource}, {data_name}')
+    numeric_analysis.change_data(df)
+    return numeric_analysis.render()
+
+
 
 
 app.layout = dbc.Container([
