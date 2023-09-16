@@ -9,7 +9,17 @@ app = Dash(__name__, external_stylesheets=external_stylesheets, suppress_callbac
 app.layout = dbc.Container([
     dbc.Container([
         dbc.Row([
-            dbc.Col(html.Div('hello'), style={'backgroundColor': 'green'}),
+            dbc.Col(
+                dbc.RadioItems(
+                    options={
+                        'csv': 'csv url',
+                        'seaborn': 'seaborn data',
+                        'plotly': 'plotly data',
+                        'sklearn': 'sklearn data',
+                    },
+                    value='csv',
+                ),
+            ),
             dbc.Col(html.Div('world'), style={'backgroundColor': 'red'}),
             dbc.Col(html.Div('!!!'), style={'backgroundColor': 'blue'}),
         ]),
