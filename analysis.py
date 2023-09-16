@@ -8,7 +8,11 @@ app = Dash(__name__, external_stylesheets=external_stylesheets, suppress_callbac
 
 app.layout = dbc.Container([
     dbc.Container([
-        dbc.Row([html.Div('input')], style={'backgroundColor': 'blue'}),
+        dbc.Row([
+            dbc.Col(html.Div('hello'), style={'backgroundColor': 'green'}),
+            dbc.Col(html.Div('world'), style={'backgroundColor': 'red'}),
+            dbc.Col(html.Div('!!!'), style={'backgroundColor': 'blue'}),
+        ]),
         dbc.Row(html.Div('chart'), style={'backgroundColor': 'yellow'}),
     ]),
 ])
