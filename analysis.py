@@ -47,8 +47,6 @@ def select_input(data_source):
         plotly_datalist() if data_source == 'plotly' else
         sklearn_datalist()
     )
-    print(data_source)
-    print([{data: data} for data in data_list])
     return html.Div([
         dbc.Select(
             id=data_source+'_input',
