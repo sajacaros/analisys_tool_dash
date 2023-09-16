@@ -8,6 +8,7 @@ seaborn, plotly, sklearn에서 제공하는 데이터와 온라인상의 csv 파
 - dash
 - dash-bootstrap-components
 - sklearn
+- seaborn
 
 ## How to start
 ```shell
@@ -21,6 +22,7 @@ $ pip install dash
 $ pip install dash-bootstrap-components
 $ pip install pandas
 $ pip install scikit-learn
+$ pip install seaborn
 ```
 
 ## Run
