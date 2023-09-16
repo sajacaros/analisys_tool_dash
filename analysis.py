@@ -110,25 +110,27 @@ def apply_datasource(n_clicks, datasource, data_name):
 
 app.layout = dbc.Container([
     dbc.Container([
-        dbc.Row([
-            dbc.Col(
-                dbc.RadioItems(
-                    id='datasource_select',
-                    options={
-                        'csv': 'csv url',
-                        'seaborn': 'seaborn data',
-                        'plotly': 'plotly data',
-                        'sklearn': 'sklearn data',
-                    },
-                    value='csv',
+        dbc.Row(
+            [
+                dbc.Col(
+                    dbc.RadioItems(
+                        id='datasource_select',
+                        options={
+                            'csv': 'csv url',
+                            'seaborn': 'seaborn data',
+                            'plotly': 'plotly data',
+                            'sklearn': 'sklearn data',
+                        },
+                        value='csv',
+                    ),
+                    width=2,
                 ),
-                width=2,
-            ),
-            dbc.Col(html.Div(id='user_input_component'), width=8),
-            dbc.Col(
-                dbc.Button(id='apply_submit', children='apply', n_clicks=0, color='primary', className='me-1'), width=2,
-            ),
-        ]),
+                dbc.Col(html.Div(id='user_input_component'), width=8),
+                dbc.Col(
+                    dbc.Button(id='apply_submit', children='apply', n_clicks=0, color='primary', className='me-1'), width=2,
+                ),
+            ], align='center',
+        ),
         html.Hr(),
         dbc.Row(html.Div(id='analysis_area'), style={'backgroundColor': 'yellow'}),
     ]),
