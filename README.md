@@ -29,7 +29,7 @@ $ python analysis.py
 ```
 
 ## Document
-* [기획 자료](https://docs.google.com/presentation/d/1sSDc6eYUmPuQ8P8gIAom1tlhhNoiXy5uYC2z26Q-oFg/edit?usp=sharing)
+* [기획 자료](https://docs.google.com/presentation/d/1sSDc6eYUmPuQ8P8gIAom1tlhhNoiXy5uYC2z26Q-oFg)
 
 ## Credits
 - @sajacaros
