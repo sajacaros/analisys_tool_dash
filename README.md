@@ -30,6 +30,9 @@ $ pip install seaborn
 $ python analysis.py
 ```
 
+## demo
+* ![](images/demo.PNG)
+
 ## Document
 * [기획 자료](https://docs.google.com/presentation/d/1sSDc6eYUmPuQ8P8gIAom1tlhhNoiXy5uYC2z26Q-oFg)
 
