@@ -116,13 +116,8 @@ def get_plotly_data(data_name):
 
 
 def get_sklearn_data(data_name):
-    data = getattr(datasets, 'load_'+data_name)()
-    df = pd.DataFrame(
-        data=data.data,
-        columns=data.feature_names,
-    )
-    df['target'] = pd.Series(data.target)
-    return df
+    data = getattr(datasets, 'load_'+data_name)(as_frame=True)
+    return data.frame
 
 
 def get_data(datasource, data_name):
